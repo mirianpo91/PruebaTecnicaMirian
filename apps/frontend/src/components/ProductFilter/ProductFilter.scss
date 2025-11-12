@@ -1,0 +1,22 @@
+@use '../../styles/abstracts/variables' as *;
+@use '../../styles/abstracts/colors' as *;
+@use '../../styles/base/_typography' as *;
+
+.product-filter { 
+  gap: $spacing__8; 
+}
+
+.product-filter__label {
+  @include label-medium();
+  color: $color__black;
+}
+
+.product-filter__select {
+  @include body-medium();
+  padding: $spacing__8 $spacing__12;
+  border: 1px solid $color__light-grey;
+  border-radius: $border-radius__4;
+  color: $color__black;
+  background: $color__white;
+}
+

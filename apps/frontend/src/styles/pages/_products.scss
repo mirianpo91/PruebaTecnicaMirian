@@ -1,0 +1,35 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/colors' as *;
+@use '../base/_typography' as *;
+
+.products-page {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing__24;
+}
+
+.products-page__header {
+  margin-bottom: $spacing__8;
+}
+
+.products-page__title {
+  @include headline-large();
+  color: $color__black;
+  margin: 0 0 $spacing__8 0;
+}
+
+.products-page__subtitle {
+  @include body-large();
+  color: $color__mid-grey;
+  margin: 0;
+}
+
+.products-page__controls { 
+  margin-bottom: $spacing__8; 
+}
+
+.products-page__grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
+  gap: $spacing__16; 
+}

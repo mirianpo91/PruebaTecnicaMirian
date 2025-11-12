@@ -1,0 +1,13 @@
+@use './abstracts/variables' as *;
+@use './abstracts/colors' as *;
+@use './base/_typography' as *;
+@use './base/_reset.scss';
+@use './layout/_grid.scss';
+@use './pages/_products.scss';
+
+body { 
+  font-family: $font-family__base; 
+  background: $color__lighter-grey; 
+  color: $color__black; 
+}
+.app__header { margin-bottom: $spacing__16; }

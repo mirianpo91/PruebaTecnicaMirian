@@ -1,0 +1,40 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Mouse Inalámbrico",
+      "category": "Periféricos",
+      "price": 19.99,
+      "image": "https://placehold.co/300x150"
+    },
+    {
+      "id": 2,
+      "name": "Teclado Mecánico",
+      "category": "Periféricos",
+      "price": 59.50,
+      "image": "https://placehold.co/600x200"
+    },
+    {
+      "id": 3,
+      "name": "Monitor 24\"",
+      "category": "Monitores",
+      "price": 129.99,
+      "image": "https://placehold.co/300x450"
+    },
+    {
+      "id": 4,
+      "name": "Auriculares Bluetooth",
+      "category": "Audio",
+      "price": 79.99,
+      "image": "https://placehold.co/300x200"
+    },
+    {
+      "id": 5,
+      "name": "Webcam HD",
+      "category": "Periféricos",
+      "price": 45.00,
+      "image": "https://placehold.co/300x200"
+    }
+  ]
+}
+

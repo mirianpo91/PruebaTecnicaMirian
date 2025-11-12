@@ -1,0 +1,25 @@
+@use '../../styles/abstracts/variables' as *;
+@use '../../styles/abstracts/colors' as *;
+@use '../../styles/base/_typography' as *;
+
+.empty-state { 
+  padding: $spacing__32; 
+  color: $color__mid-grey; 
+}
+
+.empty-state__icon {
+  display: block;
+  margin-bottom: $spacing__16;
+}
+
+.empty-state__title {
+  @include headline-small();
+  color: $color__black;
+  margin-bottom: $spacing__12;
+}
+
+.empty-state__message {
+  @include body-medium();
+  color: $color__mid-grey;
+}
+

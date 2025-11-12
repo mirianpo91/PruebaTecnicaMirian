@@ -1,0 +1,35 @@
+@use '../../styles/abstracts/variables' as *;
+@use '../../styles/abstracts/colors' as *;
+@use '../../styles/base/_typography' as *;
+
+.navbar {
+  background: $color__white;
+  border-bottom: 1px solid $color__light-grey;
+  padding: $spacing__12 $spacing__16;
+}
+
+.navbar__logo {
+  @include title-medium(600);
+  color: $color__primary;
+  margin-right: $spacing__24;
+}
+
+.navbar__user {
+  display: flex;
+  align-items: center;
+  gap: $spacing__8;
+  padding: $spacing__8 $spacing__12;
+  border-radius: $border-radius__4;
+  background: $color__lighter-grey;
+}
+
+.navbar__user-icon {
+  color: $color__primary;
+  font-size: $font-size__16;
+}
+
+.navbar__user-name {
+  @include body-medium();
+  color: $color__black;
+}
+

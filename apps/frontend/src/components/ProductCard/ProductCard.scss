@@ -1,0 +1,14 @@
+@use '../../styles/abstracts/variables' as *;
+@use '../../styles/abstracts/colors' as *;
+@use '../../styles/base/_typography' as *;
+
+.product-card { 
+  background: $color__white; 
+}
+
+.product-card__price { 
+  @include title-medium(700);
+  margin-top: $spacing__8; 
+  color: $color__primary;
+}
+

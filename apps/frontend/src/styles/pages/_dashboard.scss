@@ -1,0 +1,51 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/colors' as *;
+@use '../base/_typography' as *;
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing__24;
+}
+
+.dashboard__header {
+  margin-bottom: $spacing__8;
+}
+
+.dashboard__title {
+  @include headline-large();
+  color: $color__black;
+  margin: 0 0 $spacing__8 0;
+}
+
+.dashboard__subtitle {
+  @include body-large();
+  color: $color__mid-grey;
+  margin: 0;
+}
+
+.dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $spacing__16;
+}
+
+.dashboard__sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: $spacing__24;
+}
+
+.dashboard__section {
+  background: $color__white;
+  border: 1px solid $color__light-grey;
+  border-radius: $border-radius__default;
+  padding: $spacing__20;
+}
+
+.dashboard__section-title {
+  @include title-medium();
+  color: $color__black;
+  margin: 0 0 $spacing__16 0;
+}
+

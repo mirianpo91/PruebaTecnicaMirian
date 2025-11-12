@@ -1,0 +1,56 @@
+@use '../../styles/abstracts/variables' as *;
+@use '../../styles/abstracts/colors' as *;
+@use '../../styles/base/_typography' as *;
+
+.category-chart {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing__16;
+}
+
+.category-chart__item {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing__8;
+}
+
+.category-chart__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category-chart__name {
+  @include body-medium(500);
+  color: $color__black;
+}
+
+.category-chart__count {
+  @include label-medium();
+  color: $color__primary;
+  background: rgba($color__primary, 0.1);
+  padding: $spacing__2 $spacing__8;
+  border-radius: $border-radius__4;
+}
+
+.category-chart__bar {
+  height: 8px;
+  background: $color__lighter-grey;
+  border-radius: $border-radius__4;
+  overflow: hidden;
+}
+
+.category-chart__fill {
+  height: 100%;
+  background: $color__primary;
+  border-radius: $border-radius__4;
+  transition: width 0.3s ease;
+}
+
+.category-chart__empty {
+  @include body-medium();
+  color: $color__mid-grey;
+  text-align: center;
+  padding: $spacing__24;
+}
+
