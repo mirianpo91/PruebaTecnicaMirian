@@ -36,6 +36,7 @@ import { useProductsStore } from '../stores/products'
 import StatCard from '../components/Dashboard/StatCard.vue'
 import CategoryChart from '../components/Dashboard/CategoryChart.vue'
 import RecentProducts from '../components/Dashboard/RecentProducts.vue'
+import {formatPrice} from "../utils/formatters";
 
 const productsStore = useProductsStore()
 
@@ -57,7 +58,7 @@ const stats = computed(() => [
   {
     id: 3,
     title: 'Precio Promedio',
-    value: averagePrice.value,
+    value: formatPrice(averagePrice.value),
     icon: 'pi pi-euro',
     color: 'accent'
   },

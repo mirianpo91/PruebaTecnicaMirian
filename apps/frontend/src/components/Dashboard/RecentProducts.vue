@@ -19,7 +19,7 @@
         <p class="recent-products__category">{{ product.category }}</p>
       </div>
       <div class="recent-products__price">
-        <span>€ {{ product.price }}</span>
+        <span>{{ formatPrice(product.price) }}</span>
       </div>
     </div>
     <p v-if="products.length === 0" class="recent-products__empty">
@@ -29,6 +29,7 @@
 </template>
 
 <script setup>
+import { formatPrice } from '../../utils/formatters'
 defineProps({
   products: { type: Array, default: () => [] }
 })

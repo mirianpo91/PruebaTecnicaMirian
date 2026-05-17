@@ -10,7 +10,8 @@ export const productsService = {
    */
   async getAll() {
     try {
-      return await apiClient.get('/products')
+      const response = await apiClient.get('/products')
+      return response.data
     } catch (error) {
       console.error('Error en productsService.getAll:', error)
       throw error

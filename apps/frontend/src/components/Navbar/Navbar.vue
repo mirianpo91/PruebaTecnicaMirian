@@ -21,24 +21,34 @@ import { useNavigationStore } from '../../stores/navigation'
 const userStore = useUserStore()
 const navigationStore = useNavigationStore()
 
-const items = computed(() => [
+const navigateTo = (view) => {
+  navigationStore.setCurrentView(view)
+}
+
+const menuItems = [
   {
     label: 'Dashboard',
     icon: 'pi pi-home',
-    command: () => {
-      navigationStore.setCurrentView('dashboard')
-    },
-    class: navigationStore.currentView === 'dashboard' ? 'p-menuitem-active' : ''
+    view: 'dashboard'
   },
   {
     label: 'Productos',
     icon: 'pi pi-box',
-    command: () => {
-      navigationStore.setCurrentView('products')
-    },
-    class: navigationStore.currentView === 'products' ? 'p-menuitem-active' : ''
+    view: 'products'
   }
-])
+]
+
+const items = computed(() =>
+    menuItems.map((item) => ({
+      label: item.label,
+      icon: item.icon,
+      command: () => navigateTo(item.view),
+      class:
+          navigationStore.currentView === item.view
+              ? 'p-menuitem-active'
+              : ''
+    }))
+)
 </script>
 
 <style lang="scss" scoped>

@@ -24,10 +24,13 @@ class ApiClient {
 
     try {
       const response = await fetch(url, config)
-      const data = await response.json()
+      const text = await response.text()
+      const data = text ? JSON.parse(text) : null
 
       if (!response.ok) {
-        throw new Error(data.error || `Error ${response.status}: ${response.statusText}`)
+        throw new Error(
+            data?.error || `Error ${response.status}: ${response.statusText}`
+        )
       }
 
       return data

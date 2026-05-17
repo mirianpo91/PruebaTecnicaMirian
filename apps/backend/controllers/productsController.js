@@ -1,53 +1,53 @@
-const fs = require('fs').promises
-const path = require('path')
+const service = require('../services/productsService')
 
-const DB_PATH = path.join(__dirname, '../data/database.json')
+const {
+  badRequest,
+  notFound,
+  serverError
+} = require('../utils/errors')
 
-// Helper para leer la base de datos
-async function readDatabase() {
-  try {
-    const data = await fs.readFile(DB_PATH, 'utf8')
-    return JSON.parse(data)
-  } catch (error) {
-    // Si el archivo no existe, crear uno con datos iniciales
-    const initialData = { products: [] }
-    await fs.writeFile(DB_PATH, JSON.stringify(initialData, null, 2))
-    return initialData
-  }
-}
+const {
+  isValidId,
+  isValidString,
+  parsePrice
+} = require('../utils/validators')
 
-// Helper para escribir en la base de datos
-async function writeDatabase(data) {
-  await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2))
-}
+const DEFAULT_IMAGE = 'https://placehold.co/300x200'
+
+const delay = (ms) =>
+    new Promise(r => setTimeout(r, ms))
 
 // Obtener todos los productos
 async function getAllProducts(req, res) {
   try {
-    const db = await readDatabase()
-    // Simular latencia de red
-    setTimeout(() => {
-      res.json(db.products)
-    }, 300)
-  } catch (error) {
-    res.status(500).json({ error: 'Error al obtener productos', message: error.message })
+    await delay(200)
+
+    const data = await service.getAll()
+
+    return res.json({ data })
+  } catch (err) {
+    return serverError(res, err, 'Error al obtener productos')
   }
 }
 
 // Obtener un producto por ID
 async function getProductById(req, res) {
   try {
-    const db = await readDatabase()
     const id = Number(req.params.id)
-    const product = db.products.find(p => p.id === id)
-    
-    if (!product) {
-      return res.status(404).json({ error: 'Producto no encontrado' })
+
+    if (!isValidId(id)) {
+      return badRequest(res, 'ID inválido')
     }
-    
-    res.json(product)
-  } catch (error) {
-    res.status(500).json({ error: 'Error al obtener el producto', message: error.message })
+
+    const product = await service.getById(id)
+
+    if (!product) {
+      return notFound(res, 'Producto no encontrado')
+    }
+
+    return res.json({ data: product })
+  } catch (err) {
+    return serverError(res, err, 'Error al obtener producto')
   }
 }
 
@@ -55,30 +55,27 @@ async function getProductById(req, res) {
 async function createProduct(req, res) {
   try {
     const { name, category, price, image } = req.body
-    
-    if (!name || !category) {
-      return res.status(400).json({ error: 'name y category son requeridos' })
+
+    if (!isValidString(name) || !isValidString(category)) {
+      return badRequest(res, 'name y category son requeridos')
     }
-    
-    const db = await readDatabase()
-    const id = db.products.length 
-      ? Math.max(...db.products.map(p => p.id)) + 1 
-      : 1
-    
-    const newProduct = {
-      id,
+
+    const parsedPrice = parsePrice(price)
+
+    if (parsedPrice === null) {
+      return badRequest(res, 'price inválido')
+    }
+
+    const product = await service.create({
       name,
       category,
-      price: Number(price) || 0,
-      image: image || 'https://placehold.co/300x200'
-    }
-    
-    db.products.push(newProduct)
-    await writeDatabase(db)
-    
-    res.status(201).json(newProduct)
-  } catch (error) {
-    res.status(500).json({ error: 'Error al crear el producto', message: error.message })
+      price: parsedPrice,
+      image: (image && image.trim()) || DEFAULT_IMAGE
+    })
+
+    return res.status(201).json({ data: product })
+  } catch (err) {
+    return serverError(res, err, 'Error al crear producto')
   }
 }
 
@@ -86,29 +83,20 @@ async function createProduct(req, res) {
 async function updateProduct(req, res) {
   try {
     const id = Number(req.params.id)
-    const { name, category, price, image } = req.body
-    
-    const db = await readDatabase()
-    const productIndex = db.products.findIndex(p => p.id === id)
-    
-    if (productIndex === -1) {
-      return res.status(404).json({ error: 'Producto no encontrado' })
+
+    if (!isValidId(id)) {
+      return badRequest(res, 'ID inválido')
     }
-    
-    const updatedProduct = {
-      ...db.products[productIndex],
-      ...(name && { name }),
-      ...(category && { category }),
-      ...(price !== undefined && { price: Number(price) }),
-      ...(image && { image })
+
+    const updated = await service.update(id, req.body)
+
+    if (!updated) {
+      return notFound(res, 'Producto no encontrado')
     }
-    
-    db.products[productIndex] = updatedProduct
-    await writeDatabase(db)
-    
-    res.json(updatedProduct)
-  } catch (error) {
-    res.status(500).json({ error: 'Error al actualizar el producto', message: error.message })
+
+    return res.json({ data: updated })
+  } catch (err) {
+    return serverError(res, err, 'Error al actualizar producto')
   }
 }
 
@@ -116,18 +104,20 @@ async function updateProduct(req, res) {
 async function deleteProduct(req, res) {
   try {
     const id = Number(req.params.id)
-    const db = await readDatabase()
-    const beforeLength = db.products.length
-    db.products = db.products.filter(p => p.id !== id)
-    
-    if (db.products.length === beforeLength) {
-      return res.status(404).json({ error: 'Producto no encontrado' })
+
+    if (!isValidId(id)) {
+      return badRequest(res, 'ID inválido')
     }
-    
-    await writeDatabase(db)
-    res.json({ success: true, message: 'Producto eliminado correctamente' })
-  } catch (error) {
-    res.status(500).json({ error: 'Error al eliminar el producto', message: error.message })
+
+    const ok = await service.remove(id)
+
+    if (!ok) {
+      return notFound(res, 'Producto no encontrado')
+    }
+
+    return res.status(204).send()
+  } catch (err) {
+    return serverError(res, err, 'Error al eliminar producto')
   }
 }
 
@@ -138,4 +128,3 @@ module.exports = {
   updateProduct,
   deleteProduct
 }
-

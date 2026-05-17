@@ -7,6 +7,7 @@
         <ProductsView v-else-if="navigationStore.currentView === 'products'" />
       </section>
     </main>
+    <Toast />
   </div>
 </template>
 
@@ -17,6 +18,7 @@ import DashboardView from './views/dashboardView.vue'
 import ProductsView from './views/productsView.vue'
 import { useNavigationStore } from './stores/navigation'
 import { useProductsStore } from './stores/products'
+import Toast from 'primevue/toast'
 
 const navigationStore = useNavigationStore()
 const productsStore = useProductsStore()
